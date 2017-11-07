@@ -11,4 +11,11 @@
 	<packaging>jar</packaging>
 	<name>Sync2 Module API</name>
 	<description>API project for Sync2 Module</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.ict4h</groupId>
+			<artifactId>atomfeed-client</artifactId>
+		</dependency>
+	</dependencies>
 </project>
