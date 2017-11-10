@@ -1,13 +1,10 @@
 package org.openmrs.module.sync2.api.clients.impl;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import org.ict4h.atomfeed.client.AtomFeedProperties;
-import org.ict4h.atomfeed.client.repository.AllFailedEvents;
 import org.ict4h.atomfeed.client.repository.AllFeeds;
-import org.ict4h.atomfeed.client.repository.AllMarkers;
 import org.ict4h.atomfeed.client.repository.jdbc.AllFailedEventsJdbcImpl;
 import org.ict4h.atomfeed.client.repository.jdbc.AllMarkersJdbcImpl;
 import org.ict4h.atomfeed.client.service.AtomFeedClient;
@@ -25,40 +22,24 @@ public class Sync2AtomFeedClient implements Client {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Sync2AtomFeedClient.class);
 	
-	private final AllMarkers allMarkers;
-	
-	private final AllFailedEvents allFailedEvents;
-	
-	private final HashMap<String, String> clientCookies;
-	
-	private AtomFeedProperties atomFeedProperties;
+	private final AtomFeedProperties atomFeedProperties;
 	
 	private URI uri;
+	
+	private AtomFeedClient atomFeedClient;
 	
 	@Autowired
 	private PlatformTransactionManager springPlatformTransactionManager;
 	
 	public Sync2AtomFeedClient() {
-		// TODO: change it to constructor with params - it is only for tests
-		String feedUri = "http://localhost:8080/feed/recent";
-		try {
-			this.uri = new URI(feedUri);
-		} catch (URISyntaxException e) {
-			throw new Sync2Exception("Provided incorrect feed URI:" + feedUri, e);
-		}
-		
 		AtomFeedSpringTransactionManager atomFeedSpringTransactionManager = getAtomFeedSpringTransactionManager();
-		allMarkers = new AllMarkersJdbcImpl(atomFeedSpringTransactionManager);
-		allFailedEvents = new AllFailedEventsJdbcImpl(atomFeedSpringTransactionManager);
-		clientCookies = new HashMap<>();
+		HashMap<String, String> clientCookies = new HashMap<>();
 		atomFeedProperties =  new AtomFeedProperties(); // TODO: make it more generic - create getters and setters
-	}
-	
-	private AtomFeedClient createAtomFeedClient() {
-		return new AtomFeedClient(
+		
+		atomFeedClient = new AtomFeedClient(
 			new AllFeeds(atomFeedProperties, clientCookies),
-			allMarkers,
-			allFailedEvents,
+			new AllMarkersJdbcImpl(atomFeedSpringTransactionManager),
+			new AllFailedEventsJdbcImpl(atomFeedSpringTransactionManager),
 			atomFeedProperties,
 			getAtomFeedSpringTransactionManager(),
 			uri,
@@ -69,9 +50,15 @@ public class Sync2AtomFeedClient implements Client {
 	@Override
 	public void process() {
 		LOGGER.info("{} started processing", getClass().getName());
-		AtomFeedClient atomFeedClient = createAtomFeedClient();
+		validateConfiguration();
 		atomFeedClient.processEvents();
 		atomFeedClient.processFailedEvents();
+	}
+	
+	private void validateConfiguration() {
+		if (uri == null) {
+			throw new Sync2Exception("URI is not set");
+		}
 	}
 	
 	private AtomFeedSpringTransactionManager getAtomFeedSpringTransactionManager() {
@@ -88,10 +75,6 @@ public class Sync2AtomFeedClient implements Client {
 	
 	public AtomFeedProperties getAtomFeedProperties() {
 		return atomFeedProperties;
-	}
-	
-	public void setAtomFeedProperties(AtomFeedProperties atomFeedProperties) {
-		this.atomFeedProperties = atomFeedProperties;
 	}
 }
 	
