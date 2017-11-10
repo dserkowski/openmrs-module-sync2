@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import org.openmrs.module.sync2.api.clients.Client;
 import org.openmrs.module.sync2.api.exceptions.Sync2Exception;
-import org.ict4h.atomfeed.client.service.*;
+import org.ict4h.atomfeed.client.service.AtomFeedClient;
 
 public class AtomfeedClient implements Client {
 	

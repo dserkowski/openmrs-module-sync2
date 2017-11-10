@@ -47,6 +47,11 @@
 				<artifactId>atomfeed-client</artifactId>
 				<version>${atomfeedVersion}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.ict4h.openmrs</groupId>
+				<artifactId>openmrs-atomfeed-common</artifactId>
+				<version>${openmrsAtomfeedVersion}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -194,5 +199,6 @@
 		<uicommonsVersion>2.3.0</uicommonsVersion>
 		<javaCompilerVersion>1.8</javaCompilerVersion>
 		<atomfeedVersion>1.9.4</atomfeedVersion>
+		<openmrsAtomfeedVersion>2.5.5</openmrsAtomfeedVersion>
 	</properties>
 </project>
