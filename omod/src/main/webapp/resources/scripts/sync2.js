@@ -58,3 +58,7 @@ function validate() {
         "json"
     );
 }
+
+function sync2() {
+    jq.get("sync.htm", {"url":"http://localhost:8080/openmrs/ws/atomfeed/patient/recent"});
+}
