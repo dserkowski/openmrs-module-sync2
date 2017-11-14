@@ -60,5 +60,5 @@ function validate() {
 }
 
 function sync2() {
-    jq.get("sync.htm", {"url":"http://localhost:8080/openmrs/ws/atomfeed/patient/recent"});
+    jq.get("sync.htm", {"url":"http://localhost:8080/openmrs/ws/atomfeed/user/1"});
 }

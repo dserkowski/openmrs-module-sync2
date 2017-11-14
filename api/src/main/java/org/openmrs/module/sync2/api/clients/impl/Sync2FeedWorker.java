@@ -11,11 +11,11 @@ public class Sync2FeedWorker implements EventWorker {
 	
 	@Override
 	public void process(Event event) {
-		LOGGER.info("Started feed event processing");
+		LOGGER.info("Started feed event processing (id: {})", event.getId());
 	}
 	
 	@Override
 	public void cleanUp(Event event) {
-		LOGGER.info("Started feed cleanUp processing");
+		LOGGER.info("Started feed cleanUp processing (id: {})", event.getId());
 	}
 }

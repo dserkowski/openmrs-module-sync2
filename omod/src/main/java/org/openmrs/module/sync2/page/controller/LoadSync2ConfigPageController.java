@@ -1,8 +1,10 @@
 package org.openmrs.module.sync2.page.controller;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.sync2.api.Sync2ConfigurationService;
+import org.openmrs.module.sync2.api.clients.impl.Sync2AtomFeedClient;
 import org.openmrs.module.sync2.api.exceptions.Sync2Exception;
 import org.openmrs.module.sync2.api.model.configuration.Sync2Configuration;
 import org.openmrs.module.sync2.api.utils.Sync2Utils;
@@ -27,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URI;
 
 @Controller
 public class LoadSync2ConfigPageController {
@@ -69,6 +72,24 @@ public class LoadSync2ConfigPageController {
         }
 
         return "redirect:/sync2/loadSync2Config.page";
+    }
+    
+    @ResponseBody
+    @RequestMapping("/sync2/sync")
+    public void sync(@RequestParam(value = "url", required = false) String uriString) {
+        if (StringUtils.isBlank(uriString)) {
+            uriString = "http://localhost:8080/openmrs/ws/atomfeed/user";
+        }
+        try {
+            URI uri = URI.create(uriString);
+            Sync2AtomFeedClient sync2AtomFeedClient = new Sync2AtomFeedClient();
+            sync2AtomFeedClient.setUri(uri);
+            // sync2ConfigurationService.getSync2Configuration().getGeneral().getLocalFeedLocation()
+            // sync2AtomFeedClient.setUri(new URI(uri));
+            sync2AtomFeedClient.process();
+        } catch (Exception e) {
+            throw new Sync2Exception("Problem in sync method", e);
+        }
     }
 
     @ResponseBody
