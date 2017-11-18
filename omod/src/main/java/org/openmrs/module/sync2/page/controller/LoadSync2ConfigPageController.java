@@ -76,7 +76,8 @@ public class LoadSync2ConfigPageController {
     
     @ResponseBody
     @RequestMapping("/sync2/sync")
-    public void sync(@RequestParam(value = "url", required = false) String uriString) {
+    public void sync(@RequestParam(value = "url", required = false) String inputString) {
+        String uriString = inputString;
         if (StringUtils.isBlank(uriString)) {
             uriString = "http://localhost:8080/openmrs/ws/atomfeed/user";
         }
@@ -84,8 +85,6 @@ public class LoadSync2ConfigPageController {
             URI uri = URI.create(uriString);
             Sync2AtomFeedClient sync2AtomFeedClient = new Sync2AtomFeedClient();
             sync2AtomFeedClient.setUri(uri);
-            // sync2ConfigurationService.getSync2Configuration().getGeneral().getLocalFeedLocation()
-            // sync2AtomFeedClient.setUri(new URI(uri));
             sync2AtomFeedClient.process();
         } catch (Exception e) {
             throw new Sync2Exception("Problem in sync method", e);

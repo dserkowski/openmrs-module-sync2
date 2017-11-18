@@ -27,7 +27,7 @@ public class Sync2AtomFeedClient implements AtomFeedClient {
 	private URI uri;
 	
 	public Sync2AtomFeedClient() {
-		atomFeedProperties =  new AtomFeedProperties(); // TODO: make it more generic - create getters and setters
+		atomFeedProperties =  new AtomFeedProperties();
 	}
 	
 	@Override
@@ -39,11 +39,85 @@ public class Sync2AtomFeedClient implements AtomFeedClient {
 		atomFeedClient.processEvents();
 		atomFeedClient.processFailedEvents();
 	}
-	
-	private void validateConfiguration() {
-		if (uri == null) {
-			throw new Sync2Exception("URI is not set");
-		}
+
+	@Override
+	public URI getUri() {
+		return uri;
+	}
+
+	@Override
+	public void setUri(URI uri) {
+		this.uri = uri;
+	}
+
+	@Override
+	public int getReadTimeout() {
+		return atomFeedProperties.getReadTimeout();
+	}
+
+	@Override
+	public void setReadTimeout(int readTimeout) {
+		atomFeedProperties.setReadTimeout(readTimeout);
+	}
+
+	@Override
+	public int getConnectTimeout() {
+		return atomFeedProperties.getConnectTimeout();
+	}
+
+	@Override
+	public void setConnectTimeout(int connectTimeout) {
+		atomFeedProperties.setConnectTimeout(connectTimeout);
+	}
+
+	@Override
+	public boolean isControlEventProcessing() {
+		return atomFeedProperties.controlsEventProcessing();
+	}
+
+	@Override
+	public void setControlsEventProcessing(boolean value) {
+		atomFeedProperties.setControlsEventProcessing(value);
+	}
+
+	@Override
+	public int getMaxFailedEvents() {
+		return atomFeedProperties.getMaxFailedEvents();
+	}
+
+	@Override
+	public void setMaxFailedEvents(int maxFailedEvents) {
+		atomFeedProperties.setMaxFailedEvents(maxFailedEvents);
+	}
+
+	@Override
+	public int getFailedEventMaxRetry() {
+		return atomFeedProperties.getFailedEventMaxRetry();
+	}
+
+	@Override
+	public void setFailedEventMaxRetry(int failedEventMaxRetry) {
+		atomFeedProperties.setFailedEventMaxRetry(failedEventMaxRetry);
+	}
+
+	@Override
+	public int getFailedEventsBatchProcessSize() {
+		return atomFeedProperties.getFailedEventsBatchProcessSize();
+	}
+
+	@Override
+	public void setFailedEventsBatchProcessSize(int failedEventsBatchProcessSize) {
+		atomFeedProperties.setFailedEventsBatchProcessSize(failedEventsBatchProcessSize);
+	}
+
+	@Override
+	public boolean isHandleRedirection() {
+		return atomFeedProperties.isHandleRedirection();
+	}
+
+	@Override
+	public void setHandleRedirection(boolean handleRedirection) {
+		atomFeedProperties.setHandleRedirection(handleRedirection);
 	}
 	
 	private org.ict4h.atomfeed.client.service.AtomFeedClient createAtomFeedClient() {
@@ -60,22 +134,15 @@ public class Sync2AtomFeedClient implements AtomFeedClient {
 				new Sync2FeedWorker()
 		);
 	}
-	
+
+	private void validateConfiguration() {
+		if (uri == null) {
+			throw new Sync2Exception("URI is not set");
+		}
+	}
 	
 	private AtomFeedSpringTransactionManager getAtomFeedSpringTransactionManager() {
 		return new AtomFeedSpringTransactionManager(Sync2Utils.getSpringPlatformTransactionManager());
-	}
-	
-	public URI getUri() {
-		return uri;
-	}
-
-	public void setUri(URI uri) {
-		this.uri = uri;
-	}
-	
-	public AtomFeedProperties getAtomFeedProperties() {
-		return atomFeedProperties;
 	}
 }
 	
