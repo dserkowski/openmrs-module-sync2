@@ -10,8 +10,10 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 import org.codehaus.jackson.util.DefaultPrettyPrinter;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.sync2.api.exceptions.Sync2Exception;
 import org.openmrs.module.sync2.api.model.configuration.Sync2Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 public class Sync2Utils {
 
@@ -81,5 +83,9 @@ public class Sync2Utils {
     public static boolean resourceFileExists(String path) {
         InputStream in = Sync2Utils.class.getClassLoader().getResourceAsStream(path);
         return in != null;
+    }
+
+    public static PlatformTransactionManager getSpringPlatformTransactionManager() {
+        return Context.getRegisteredComponents(PlatformTransactionManager.class).get(0);
     }
 }

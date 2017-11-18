@@ -12,7 +12,6 @@ import org.openmrs.module.atomfeed.transaction.support.AtomFeedSpringTransaction
 import org.openmrs.module.sync2.api.clients.AtomFeedClient;
 import org.openmrs.module.sync2.api.exceptions.Sync2Exception;
 import org.openmrs.module.sync2.api.utils.Sync2Utils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -21,14 +20,11 @@ import org.springframework.stereotype.Component;
 @Component("sync.Sync2AtomFeedClient")
 @Scope("request")
 public class Sync2AtomFeedClient implements AtomFeedClient {
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Sync2AtomFeedClient.class);
 	
 	private final AtomFeedProperties atomFeedProperties;
 	
 	private URI uri;
-	
-	private org.ict4h.atomfeed.client.service.AtomFeedClient atomFeedClient;
 	
 	public Sync2AtomFeedClient() {
 		atomFeedProperties =  new AtomFeedProperties(); // TODO: make it more generic - create getters and setters
