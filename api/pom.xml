@@ -17,6 +17,7 @@
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
 			<scope>provided</scope>
+			<version>${openmrsPlatformVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -34,6 +35,16 @@
 			<artifactId>atomfeed-api</artifactId>
 			<scope>provided</scope>
 			<version>${atomfeedVersion}</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.httpcomponents</groupId>-->
+			<!--<artifactId>httpcore</artifactId>-->
+			<!--<version>4.1</version>-->
+		<!--</dependency>-->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.4</version>
 		</dependency>
 	</dependencies>
 </project>
