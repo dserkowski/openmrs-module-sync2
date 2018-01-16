@@ -3,7 +3,7 @@ package org.openmrs.module.sync2.client.rest;
 import org.openmrs.module.fhir.api.client.Client;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
-public class RestClientFactory extends HttpComponentsClientHttpRequestFactory {
+public class RestClientFactory {
 
     private final static int SECOND = 1000;
     private final static int CONNECTION_REQUEST_TIMEOUT = SECOND;
