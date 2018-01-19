@@ -23,9 +23,12 @@ import static org.openmrs.module.sync2.api.utils.SyncConfigurationUtils.readReso
 
 public class SyncConfigurationServiceImplTest {
 
-    private static final String sampleFeedConfigurationPath = "sampleSyncConfiguration.json";
-    private static final String sampleFeedConfigurationPath2 = "sampleSyncConfiguration2.json";
+    private static final String SAMPLE_FEED_CONFIGURATION_PATH = "sampleSyncConfiguration.json";
+    private static final String SAMPLE_FEED_CONFIGURATION_PATH2 = "sampleSyncConfiguration2.json";
 
+    private static final String SAMPLE_LOCAL_INSTANCE_ID = "localInstanceId";
+    private static final String SAMPLE_LOCAL_INSTANCE_ID_2 = "localInstanceId2";
+    
     @Mock
     private SyncSchedulerService syncSchedulerService;
 
@@ -44,7 +47,8 @@ public class SyncConfigurationServiceImplTest {
     public void saveConfiguration_shouldLoadTheSyncConfigurationFromObjectCorrectly() throws SyncException {
         final SyncConfiguration expectedSyncConfiguration = new SyncConfiguration();
 
-        GeneralConfiguration general = new GeneralConfiguration("", "defaultAddress", false, false);
+        GeneralConfiguration general = new GeneralConfiguration("", "defaultAddress",
+                SAMPLE_LOCAL_INSTANCE_ID, false, false);
         expectedSyncConfiguration.setGeneral(general);
 
         ClassConfiguration locationClass = new ClassConfiguration("Location",
@@ -60,7 +64,7 @@ public class SyncConfigurationServiceImplTest {
         expectedSyncConfiguration.setPull(pull);
 
 
-        SyncConfiguration syncConfiguration = parseJsonFileToSyncConfiguration(sampleFeedConfigurationPath);
+        SyncConfiguration syncConfiguration = parseJsonFileToSyncConfiguration(SAMPLE_FEED_CONFIGURATION_PATH);
         sync2ConfigurationService.saveConfiguration(syncConfiguration);
 
         Assert.assertEquals(expectedSyncConfiguration, sync2ConfigurationService.getSyncConfiguration());
@@ -70,7 +74,8 @@ public class SyncConfigurationServiceImplTest {
     public void saveConfiguration_shouldLoadTheSyncConfigurationFromStringCorrectly() throws SyncException {
         final SyncConfiguration expectedSyncConfiguration = new SyncConfiguration();
 
-        GeneralConfiguration general = new GeneralConfiguration("", "defaultAddress2", false, false);
+        GeneralConfiguration general = new GeneralConfiguration("", "defaultAddress2",
+                SAMPLE_LOCAL_INSTANCE_ID_2, false, false);
         expectedSyncConfiguration.setGeneral(general);
 
         ClassConfiguration encounterClass = new ClassConfiguration("Encounter",
@@ -85,7 +90,7 @@ public class SyncConfigurationServiceImplTest {
         SyncMethodConfiguration pull = new SyncMethodConfiguration(false, 24, classes);
         expectedSyncConfiguration.setPull(pull);
 
-        String json = readResourceFile(sampleFeedConfigurationPath2);
+        String json = readResourceFile(SAMPLE_FEED_CONFIGURATION_PATH2);
         sync2ConfigurationService.saveConfiguration(json);
 
         Assert.assertEquals(expectedSyncConfiguration, sync2ConfigurationService.getSyncConfiguration());
