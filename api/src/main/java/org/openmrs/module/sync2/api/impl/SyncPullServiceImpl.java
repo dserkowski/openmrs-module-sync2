@@ -30,7 +30,7 @@ import static org.openmrs.module.sync2.api.model.enums.OpenMRSSyncInstance.PAREN
 import static org.openmrs.module.sync2.api.utils.SyncAuditUtils.prepareBaseAuditMessage;
 import static org.openmrs.module.sync2.api.utils.SyncUtils.getPullUrl;
 import static org.openmrs.module.sync2.api.utils.SyncUtils.getPushUrl;
-import static org.openmrs.module.sync2.api.utils.SyncUtils.serializeMapToPrettyJson;
+import static org.openmrs.module.sync2.api.utils.SyncUtils.prettySerialize;
 
 @Component("sync2.syncPullService")
 public class SyncPullServiceImpl implements SyncPullService {
@@ -56,7 +56,7 @@ public class SyncPullServiceImpl implements SyncPullService {
         auditMessage.setResourceName(category);
         auditMessage.setUsedResourceUrl(parentPull);
         auditMessage.setLinkType(clientName);
-        auditMessage.setAvailableResourceUrls(serializeMapToPrettyJson(resourceLinks));
+        auditMessage.setAvailableResourceUrls(prettySerialize(resourceLinks));
         auditMessage.setAction(action);
 
         try {
